@@ -58,8 +58,13 @@ jobs:
       - name: Build
         uses: actions/jekyll-build-pages@v1.0.13
 
+      - name: Copy .well-known folder
+        run: cp -r .well-known _site/
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3.0.1
+        with:
+          path: _site
 
   # Deployment job
   deploy:
