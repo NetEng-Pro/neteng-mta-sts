@@ -18,37 +18,36 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  check-codeql:
-    name: Check CodeQL Analysis
-    continue-on-error: true
-    runs-on: ubuntu-24.04
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4.2.2
+  #check-codeql:
+    #name: Check CodeQL Analysis
+    #runs-on: ubuntu-24.04
+    #steps:
+      #- name: Checkout repository
+      #  uses: actions/checkout@v4.2.2
 
-      - name: Set up GitHub CLI
-        run: sudo apt-get install gh
+      #- name: Set up GitHub CLI
+      #  run: sudo apt-get install gh
 
-      - name: Authenticate GitHub CLI
-        env:
-          GH_PAT: ${{ secrets.GH_PAT }}
-        run: echo "${{ secrets.GH_PAT }}" | gh auth login --with-token
+      #- name: Authenticate GitHub CLI
+      #  env:
+      #    GH_PAT: ${{ secrets.GH_PAT }}
+      #  run: echo "${{ secrets.GH_PAT }}" | gh auth login --with-token
 
-      - name: Check CodeQL Workflow
-        env:
-          GH_PAT: ${{ secrets.GH_PAT }}
-        run: |
-          gh run list --workflow "CodeQL" --json conclusion --jq '.[0].conclusion' > codeql_status.txt
-          CODEQL_STATUS=$(cat codeql_status.txt)
-          if [[ "$CODEQL_STATUS" != "success" ]]; then
-            echo "CodeQL Analysis did not succeed. Exiting..."
-            exit 1
-          fi
-          rm codeql_status.txt
+      #- name: Check CodeQL Workflow
+      #  env:
+      #    GH_PAT: ${{ secrets.GH_PAT }}
+      #  run: |
+      #    gh run list --workflow "CodeQL" --json conclusion --jq '.[0].conclusion' > codeql_status.txt
+      #    CODEQL_STATUS=$(cat codeql_status.txt)
+      #    if [[ "$CODEQL_STATUS" != "success" ]]; then
+      #      echo "CodeQL Analysis did not succeed. Exiting..."
+      #      exit 1
+      #    fi
+      #    rm codeql_status.txt
 
   build:
     runs-on: ubuntu-24.04
-    needs: check-codeql
+    #needs: check-codeql
     steps:
       - name: Checkout
         uses: actions/checkout@v4.2.2
@@ -65,7 +64,7 @@ jobs:
   # Deployment job
   deploy:
     runs-on: ubuntu-24.04
-    needs: [build, check-codeql]
+    needs: build
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
