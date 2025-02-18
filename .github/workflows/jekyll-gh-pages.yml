@@ -58,6 +58,9 @@ jobs:
       - name: Build
         uses: actions/jekyll-build-pages@v1.0.13
 
+      - name: Change permissions of _site directory
+        run: sudo chmod -R 777 _site
+
       - name: Copy .well-known folder
         run: cp -r .well-known _site/
 
