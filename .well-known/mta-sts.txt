@@ -1,0 +1,4 @@
+version: STSv1
+mode: testing
+mx: mx.easymail.ca
+max_age: 1209600
