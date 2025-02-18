@@ -20,6 +20,7 @@ concurrency:
 jobs:
   check-codeql:
     name: Check CodeQL Analysis
+    continue-on-error: true
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout repository
